@@ -861,3 +861,42 @@ on top of the iPod's black screen.
   overflow: hidden;
   text-overflow: ellipsis;
 }
+
+
+/* =====================================
+   NANO SCREEN — LARGER ALBUM ART
+   ===================================== */
+
+.nano-player {
+  padding: 0 3px 4px;
+}
+
+.now-playing-label {
+  margin: 0 0 3px;
+  font-size: 10px;
+}
+
+.track-art-full {
+  width: 188px;
+  height: 188px;
+  flex: 0 0 188px;
+  margin: 0 0 4px;
+}
+
+.progress-section {
+  margin: 0 0 3px;
+}
+
+.time-row {
+  margin: 0 0 2px;
+  font-size: 7px;
+}
+
+.track-title-full {
+  margin: 0 0 1px;
+  font-size: 9px;
+}
+
+.track-artist-full {
+  font-size: 7px;
+}
