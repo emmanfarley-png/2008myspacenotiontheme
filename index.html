@@ -70,56 +70,171 @@
 
 
 
-      <!-- MUSIC CARD -->
+    <!-- MUSIC CARD -->
 
-      <div class="music-card">
+<div class="music-card">
 
-        <h2 class="music-heading">
-          ♫ NOW PLAYING
-        </h2>
+  <h2 class="music-heading">
+    ♫ NOW PLAYING
+  </h2>
 
 
-        <div class="ipod-wrap">
+  <!-- PLAYLIST SWITCHER -->
+
+  <div class="playlist-tabs">
+
+    <button
+      class="playlist-btn active"
+      id="teen-playlist"
+      type="button"
+    >
+      teen chick flick
+    </button>
+
+    <button
+      class="playlist-btn"
+      id="disney-playlist"
+      type="button"
+    >
+      radio disney
+    </button>
+
+  </div>
+
+
+  <!-- IPOD -->
+
+  <div class="ipod-wrap">
+
+    <img
+      class="real-ipod"
+      src="ipod-nano-front.png"
+      alt="Pink iPod Nano"
+    >
+
+
+    <!-- CUSTOM SCREEN OVER THE REAL IPOD -->
+
+    <div class="ipod-screen">
+
+      <div class="screen-top">
+
+        <span class="nano-label">
+          emma’s nano
+        </span>
+
+        <span class="nano-heart">
+          ♡
+        </span>
+
+      </div>
+
+
+      <!-- BEFORE SPOTIFY IS CONNECTED -->
+
+      <div
+        class="spotify-login"
+        id="spotify-login"
+      >
+
+        <button
+          class="connect-spotify"
+          id="connect-spotify"
+          type="button"
+        >
+          ♡ CONNECT SPOTIFY
+        </button>
+
+        <p
+          class="spotify-status"
+          id="spotify-status"
+        >
+          not connected
+        </p>
+
+      </div>
+
+
+      <!-- AFTER SPOTIFY IS CONNECTED -->
+
+      <div
+        class="nano-player hidden"
+        id="nano-player"
+      >
+
+        <div class="now-playing-row">
 
           <img
-            class="real-ipod"
-            src="ipod-nano-front.png"
-            alt="Pink iPod Nano"
+            id="track-art"
+            class="track-art"
+            alt="Current album art"
           >
 
+          <div class="track-info">
 
-          <!-- this sits over the real black iPod screen -->
+            <p
+              class="track-title"
+              id="track-title"
+            >
+              pick a playlist ♡
+            </p>
 
-          <div class="ipod-screen">
+            <p
+              class="track-artist"
+              id="track-artist"
+            >
+              emma's nano
+            </p>
 
-            <div class="screen-top">
+          </div>
 
-              <span class="nano-label">
-                emma’s nano
-              </span>
-
-              <span class="nano-heart">
-                ♡
-              </span>
-
-            </div>
+        </div>
 
 
-            <!-- Spotify turns this div into a real player -->
+        <div class="nano-controls">
 
-           <div class="spotify-login" id="spotify-login">
+          <button
+            id="prev-track"
+            class="nano-control"
+            type="button"
+            aria-label="Previous track"
+          >
+            ◀◀
+          </button>
 
-  <button
-    class="connect-spotify"
-    id="connect-spotify"
-    type="button"
-  >
-    ♡ CONNECT SPOTIFY
-  </button>
+          <button
+            id="toggle-play"
+            class="nano-control play-control"
+            type="button"
+            aria-label="Play or pause"
+          >
+            ▶
+          </button>
 
-  <p class="spotify-status" id="spotify-status">
-    not connected
-  </p>
+          <button
+            id="next-track"
+            class="nano-control"
+            type="button"
+            aria-label="Next track"
+          >
+            ▶▶
+          </button>
+
+        </div>
+
+
+        <p
+          class="player-status"
+          id="player-status"
+        >
+          loading emma's nano...
+        </p>
+
+      </div>
+
+    </div>
+
+  </div>
 
 </div>
 
