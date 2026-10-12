@@ -129,7 +129,21 @@
 
             <!-- Spotify turns this div into a real player -->
 
-            <div id="embed-iframe"></div>
+           <div class="spotify-login" id="spotify-login">
+
+  <button
+    class="connect-spotify"
+    id="connect-spotify"
+    type="button"
+  >
+    ♡ CONNECT SPOTIFY
+  </button>
+
+  <p class="spotify-status" id="spotify-status">
+    not connected
+  </p>
+
+</div>
 
           </div>
 
@@ -146,14 +160,6 @@
   <!-- our JavaScript -->
 
   <script src="script.js"></script>
-
-
-  <!-- Spotify's official player code -->
-
-  <script
-    src="https://open.spotify.com/embed/iframe-api/v1"
-    async
-  ></script>
 
 </body>
 
