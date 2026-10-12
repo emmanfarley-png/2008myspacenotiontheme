@@ -61,3 +61,12 @@ body {
     opacity: 1;
   }
 }
+.profile-layout {
+  display: flex;
+  gap: 18px;
+  align-items: flex-start;
+}
+
+.profile-info {
+  flex: 1;
+}
