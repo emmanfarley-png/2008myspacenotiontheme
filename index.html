@@ -1,48 +1,160 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>emma online</title>
+
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+  >
+
+  <title>★ emma is online ★</title>
+
   <link rel="stylesheet" href="style.css">
 </head>
+
+
 <body>
 
-  <section class="music-card">
-    <h2 class="music-heading">♫ NOW PLAYING</h2>
+  <main class="homepage">
 
-    <div class="playlist-tabs">
-      <button class="playlist-btn active">teen chick flick</button>
-      <button class="playlist-btn">radio disney</button>
-    </div>
+    <section class="top-section">
 
-    <div class="ipod-wrap">
-      <img
-        class="real-ipod"
-        src="ipod-nano.png"
-        alt="Pink iPod Nano"
-      >
 
-      <div class="ipod-screen">
-        <div class="screen-top">
-          <span class="nano-label">emma’s nano</span>
-          <span class="nano-heart">♡</span>
+      <!-- PROFILE CARD -->
+
+      <div class="profile-card">
+
+        <div class="profile-header">
+
+          <img
+            class="profile-photo"
+            src="https://placehold.co/200x200"
+            alt="Emma profile photo"
+          >
+
+          <div class="profile-identity">
+
+            <h1>emma</h1>
+
+            <p class="online-status">
+
+              <span class="online-ring">
+                <span class="online-dot"></span>
+              </span>
+
+              ONLINE NOW
+
+            </p>
+
+          </div>
+
         </div>
 
-        <img
-          class="album-art"
-          src="https://placehold.co/300x300/f1a6cb/111111?text=album+art"
-          alt="Album art"
-        >
 
-        <p class="now-playing-label">CURRENTLY PLAYING</p>
+        <div class="profile-details">
 
-        <h3 class="song-title">Bring It On: All or Nothing</h3>
+          <p class="status">
+            "probably doing something completely unnecessary on the internet"
+          </p>
 
-        <p class="song-vibe">teen chick flick soundtrack core</p>
+          <p class="bio">
+            26 · los angeles<br>
+            professional internet user
+          </p>
+
+        </div>
+
       </div>
-    </div>
-  </section>
+
+
+
+      <!-- MUSIC CARD -->
+
+      <div class="music-card">
+
+        <h2 class="music-heading">
+          ♫ NOW PLAYING
+        </h2>
+
+
+        <div class="playlist-tabs">
+
+          <button
+            class="playlist-btn active"
+            id="teen-playlist"
+            type="button"
+          >
+            teen chick flick
+          </button>
+
+
+          <button
+            class="playlist-btn"
+            id="disney-playlist"
+            type="button"
+          >
+            radio disney
+          </button>
+
+        </div>
+
+
+        <div class="ipod-wrap">
+
+          <img
+            class="real-ipod"
+            src="ipod-nano-front.png"
+            alt="Pink iPod Nano"
+          >
+
+
+          <!-- this sits over the real black iPod screen -->
+
+          <div class="ipod-screen">
+
+            <div class="screen-top">
+
+              <span class="nano-label">
+                emma’s nano
+              </span>
+
+              <span class="nano-heart">
+                ♡
+              </span>
+
+            </div>
+
+
+            <!-- Spotify turns this div into a real player -->
+
+            <div id="embed-iframe"></div>
+
+          </div>
+
+        </div>
+
+      </div>
+
+
+    </section>
+
+  </main>
+
+
+  <!-- our JavaScript -->
+
+  <script src="script.js"></script>
+
+
+  <!-- Spotify's official player code -->
+
+  <script
+    src="https://open.spotify.com/embed/iframe-api/v1"
+    async
+  ></script>
 
 </body>
+
 </html>
