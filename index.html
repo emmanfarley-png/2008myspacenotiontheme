@@ -69,236 +69,193 @@
       </div>
 
 
+      <!-- MUSIC CARD -->
 
-    <!-- MUSIC CARD -->
+      <div class="music-card">
 
-<div class="music-card">
-
-  <h2 class="music-heading">
-    ♫ NOW PLAYING
-  </h2>
-
-
-  <!-- PLAYLIST SWITCHER -->
-
-  <div class="playlist-tabs">
-
-    <button
-      class="playlist-btn active"
-      id="teen-playlist"
-      type="button"
-    >
-      teen chick flick
-    </button>
-
-    <button
-      class="playlist-btn"
-      id="disney-playlist"
-      type="button"
-    >
-      radio disney
-    </button>
-
-  </div>
+        <h2 class="music-heading">
+          ♫ NOW PLAYING
+        </h2>
 
 
-  <!-- IPOD -->
+        <!-- PLAYLIST SWITCHER -->
 
-  <div class="ipod-wrap">
+        <div class="playlist-tabs">
 
-    <img
-      class="real-ipod"
-      src="ipod-nano-front.png"
-      alt="Pink iPod Nano"
-    >
+          <button
+            class="playlist-btn active"
+            id="teen-playlist"
+            type="button"
+          >
+            teen chick flick
+          </button>
+
+          <button
+            class="playlist-btn"
+            id="disney-playlist"
+            type="button"
+          >
+            radio disney
+          </button>
+
+        </div>
 
 
-    <!-- CUSTOM SCREEN OVER THE REAL IPOD -->
+        <!-- IPOD -->
 
-    <div class="ipod-screen">
+        <div class="ipod-wrap">
 
-      <div class="screen-top">
+          <img
+            class="real-ipod"
+            src="ipod-nano-front.png"
+            alt="Pink iPod Nano"
+          >
 
-        <span class="nano-label">
-          emma’s nano
-        </span>
 
-        <span class="nano-heart">
-          ♡
-        </span>
+          <!-- CUSTOM SCREEN OVERLAY -->
 
-      </div>
+          <div class="ipod-screen">
+
+            <div class="screen-top">
+
+              <span class="nano-label">
+                emma’s nano
+              </span>
+
+              <span class="nano-heart">
+                ♡
+              </span>
 
             </div>
-      <!-- end ipod-screen -->
 
 
-      <!-- INVISIBLE CLICK WHEEL HOTSPOTS -->
+            <!-- BEFORE SPOTIFY CONNECTS -->
 
-      <button
-        class="wheel-hotspot wheel-prev"
-        id="wheel-prev"
-        type="button"
-        aria-label="Previous track"
-      ></button>
+            <div
+              class="spotify-login"
+              id="spotify-login"
+            >
 
+              <button
+                class="connect-spotify"
+                id="connect-spotify"
+                type="button"
+              >
+                ♡ CONNECT SPOTIFY
+              </button>
 
-      <button
-        class="wheel-hotspot wheel-next"
-        id="wheel-next"
-        type="button"
-        aria-label="Next track"
-      ></button>
+              <p
+                class="spotify-status"
+                id="spotify-status"
+              >
+                not connected
+              </p>
 
-
-      <button
-        class="wheel-hotspot wheel-play"
-        id="wheel-play"
-        type="button"
-        aria-label="Play or pause"
-      ></button>
-
-
-      <button
-        class="wheel-hotspot wheel-center"
-        id="wheel-center"
-        type="button"
-        aria-label="Play or pause"
-      ></button>
+            </div>
 
 
-    </div>
-    <!-- end ipod-wrap -->
+            <!-- REAL NOW PLAYING SCREEN -->
+
+            <div
+              class="nano-player hidden"
+              id="nano-player"
+            >
+
+              <div class="now-playing-label">
+                Now Playing
+              </div>
+
+              <img
+                id="track-art"
+                class="track-art-full"
+                alt="Current album art"
+              >
+
+              <div class="progress-section">
+
+                <div class="time-row">
+
+                  <span id="current-time">
+                    0:00
+                  </span>
+
+                  <span id="total-time">
+                    0:00
+                  </span>
+
+                </div>
+
+                <div class="progress-bar">
+
+                  <div
+                    class="progress-fill"
+                    id="progress-fill"
+                  ></div>
+
+                </div>
+
+              </div>
 
 
-      <!-- BEFORE SPOTIFY IS CONNECTED -->
+              <div class="track-meta">
 
-      <div
-        class="spotify-login"
-        id="spotify-login"
-      >
+                <p
+                  class="track-title-full"
+                  id="track-title"
+                >
+                  Track Title
+                </p>
 
-        <button
-          class="connect-spotify"
-          id="connect-spotify"
-          type="button"
-        >
-          ♡ CONNECT SPOTIFY
-        </button>
+                <p
+                  class="track-artist-full"
+                  id="track-artist"
+                >
+                  Artist Name
+                </p>
 
-        <p
-          class="spotify-status"
-          id="spotify-status"
-        >
-          not connected
-        </p>
+              </div>
 
-      </div>
+            </div>
 
-
-      <!-- AFTER SPOTIFY IS CONNECTED -->
-
-      <div
-  class="nano-player hidden"
-  id="nano-player"
->
-  <div class="now-playing-label">
-    Now Playing
-  </div>
-
-  <img
-    id="track-art"
-    class="track-art-full"
-    alt="Current album art"
-  >
-
-  <div class="progress-section">
-    <div class="time-row">
-      <span id="current-time">0:00</span>
-      <span id="total-time">0:00</span>
-    </div>
-
-    <div class="progress-bar">
-      <div
-        class="progress-fill"
-        id="progress-fill"
-      ></div>
-    </div>
-  </div>
-
-  <div class="track-meta">
-    <p
-      class="track-title-full"
-      id="track-title"
-    >
-      Track Title
-    </p>
-
-    <p
-      class="track-artist-full"
-      id="track-artist"
-    >
-      Artist Name
-    </p>
-  </div>
-</div>
           </div>
+          <!-- END IPOD SCREEN -->
 
-        </div>
 
-
-        <div class="nano-controls">
+          <!-- INVISIBLE CLICK-WHEEL HOTSPOTS -->
 
           <button
-            id="prev-track"
-            class="nano-control"
+            class="wheel-hotspot wheel-prev"
+            id="wheel-prev"
             type="button"
             aria-label="Previous track"
-          >
-            ◀◀
-          </button>
+          ></button>
 
           <button
-            id="toggle-play"
-            class="nano-control play-control"
-            type="button"
-            aria-label="Play or pause"
-          >
-            ▶
-          </button>
-
-          <button
-            id="next-track"
-            class="nano-control"
+            class="wheel-hotspot wheel-next"
+            id="wheel-next"
             type="button"
             aria-label="Next track"
-          >
-            ▶▶
-          </button>
+          ></button>
+
+          <button
+            class="wheel-hotspot wheel-play"
+            id="wheel-play"
+            type="button"
+            aria-label="Play or pause"
+          ></button>
+
+          <button
+            class="wheel-hotspot wheel-center"
+            id="wheel-center"
+            type="button"
+            aria-label="Play or pause"
+          ></button>
 
         </div>
-
-
-        <p
-          class="player-status"
-          id="player-status"
-        >
-          loading emma's nano...
-        </p>
+        <!-- END IPOD -->
 
       </div>
-
-    </div>
-
-  </div>
-
-</div>
-
-          </div>
-
-        </div>
-
-      </div>
+      <!-- END MUSIC CARD -->
 
 
     </section>
