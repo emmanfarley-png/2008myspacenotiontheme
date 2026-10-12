@@ -770,3 +770,94 @@ on top of the iPod's black screen.
   overflow: hidden;
   text-overflow: ellipsis;
 }
+
+
+/* =====================================
+   NANO SCREEN — FIT FULL NOW-PLAYING UI
+   ===================================== */
+
+.ipod-screen {
+  top: 15px;
+  left: 19px;
+  width: 222px;
+  height: 286px;
+  padding: 8px;
+  overflow: hidden;
+  background: #111;
+  border-radius: 4px;
+}
+
+.screen-top {
+  height: 18px;
+  margin-bottom: 4px;
+}
+
+.nano-player {
+  width: 100%;
+  height: calc(100% - 22px);
+  padding: 0 6px 6px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  overflow: hidden;
+}
+
+.now-playing-label {
+  display: block;
+  width: 100%;
+  margin: 0 0 5px;
+  text-align: center;
+  font-size: 11px;
+  line-height: 1;
+  font-weight: 700;
+  color: #d8d8d8;
+}
+
+.track-art-full {
+  width: 156px;
+  height: 156px;
+  flex: 0 0 156px;
+  object-fit: cover;
+  margin: 0 0 6px;
+  border: 1px solid rgba(255,255,255,0.2);
+}
+
+.progress-section {
+  width: 100%;
+  margin: 0 0 5px;
+}
+
+.time-row {
+  margin: 0 0 3px;
+  font-size: 8px;
+  line-height: 1;
+}
+
+.progress-bar {
+  height: 4px;
+}
+
+.track-meta {
+  width: 100%;
+  min-width: 0;
+  text-align: center;
+}
+
+.track-title-full {
+  margin: 0 0 2px;
+  font-size: 10px;
+  line-height: 1.1;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.track-artist-full {
+  margin: 0;
+  font-size: 8px;
+  line-height: 1.1;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
