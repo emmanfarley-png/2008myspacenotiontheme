@@ -388,3 +388,120 @@ on top of the iPod's black screen.
   font-size: 10px;
   font-weight: bold;
 }
+.hidden {
+  display: none !important;
+}
+
+
+.nano-player {
+  height: 170px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+
+.now-playing-row {
+  display: grid;
+  grid-template-columns: 72px 1fr;
+  gap: 9px;
+  align-items: center;
+  min-width: 0;
+}
+
+
+.track-art {
+  width: 72px;
+  height: 72px;
+
+  object-fit: cover;
+
+  background: #2a2a2a;
+
+  border: 2px solid #ff72b7;
+}
+
+
+.track-info {
+  min-width: 0;
+  text-align: left;
+}
+
+
+.track-title {
+  margin: 0 0 5px 0;
+
+  color: white;
+
+  font-size: 12px;
+  font-weight: bold;
+  line-height: 1.2;
+
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+
+.track-artist {
+  margin: 0;
+
+  color: #ff8bc5;
+
+  font-size: 10px;
+  line-height: 1.2;
+
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+
+.nano-controls {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  gap: 10px;
+
+  margin-top: 8px;
+}
+
+
+.nano-control {
+  width: 34px;
+  height: 28px;
+
+  padding: 0;
+
+  border: 1px solid #ff72b7;
+
+  background: transparent;
+  color: white;
+
+  font-size: 10px;
+
+  cursor: pointer;
+}
+
+
+.play-control {
+  background: #ff4fa3;
+
+  font-size: 12px;
+}
+
+
+.nano-control:hover {
+  background: #ff1684;
+}
+
+
+.player-status {
+  margin: 5px 0 0 0;
+
+  color: #ff72b7;
+
+  font-size: 8px;
+  font-weight: bold;
+}
