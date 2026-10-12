@@ -163,6 +163,7 @@ async function connectSpotify() {
 );
 
 
+}
 
 // -------------------------------------
 // EXCHANGE CODE FOR TOKEN
