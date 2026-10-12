@@ -1,52 +1,290 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
   <meta charset="UTF-8">
-
-  <meta
-    name="viewport"
-    content="width=device-width, initial-scale=1.0"
-  >
-
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>emma's nano</title>
 
-  <link
-    rel="stylesheet"
-    href="nano-widget.css?v=1"
-  >
+  <style>
+    * { box-sizing: border-box; }
+
+    html,
+    body {
+      margin: 0;
+      padding: 0;
+      width: 100%;
+      min-height: 100%;
+      background: transparent;
+      font-family: Arial, Helvetica, sans-serif;
+    }
+
+    body {
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
+      overflow-x: hidden;
+    }
+
+    .music-card {
+      width: 100%;
+      max-width: 430px;
+      padding: 12px 10px 18px;
+      background: transparent;
+      border: 0;
+      text-align: center;
+      color: white;
+    }
+
+    .music-heading {
+      margin: 0 0 16px;
+      color: #ff4fa3;
+      font-size: 21px;
+      font-weight: 800;
+      letter-spacing: 2px;
+    }
+
+    .playlist-tabs {
+      display: flex;
+      justify-content: center;
+      gap: 10px;
+      margin-bottom: 18px;
+      flex-wrap: wrap;
+    }
+
+    .playlist-btn {
+      padding: 9px 14px;
+      background: #ffffff;
+      border: 3px solid #f7c8de;
+      color: #ff1684;
+      font-size: 13px;
+      font-weight: 700;
+      cursor: pointer;
+    }
+
+    .playlist-btn.active {
+      border-color: #ff1684;
+    }
+
+    .ipod-wrap {
+      position: relative;
+      width: 260px;
+      margin: 0 auto;
+    }
+
+    .real-ipod {
+      display: block;
+      width: 100%;
+      height: auto;
+    }
+
+    .ipod-screen {
+      position: absolute;
+      top: 15px;
+      left: 19px;
+      width: 222px;
+      height: 286px;
+      padding: 8px;
+      overflow: hidden;
+      background: #111;
+      border-radius: 4px;
+    }
+
+    .screen-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      height: 18px;
+      margin-bottom: 4px;
+      color: #ff72b7;
+    }
+
+    .nano-label {
+      font-size: 11px;
+      font-weight: 700;
+    }
+
+    .nano-heart {
+      font-size: 17px;
+    }
+
+    .spotify-login {
+      height: calc(100% - 22px);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+    }
+
+    .connect-spotify {
+      padding: 10px 14px;
+      background: #ff4fa3;
+      color: white;
+      border: 2px solid white;
+      font-size: 11px;
+      font-weight: 700;
+      cursor: pointer;
+    }
+
+    .spotify-status {
+      margin: 0;
+      color: #ff72b7;
+      font-size: 10px;
+      font-weight: 700;
+    }
+
+    .hidden {
+      display: none !important;
+    }
+
+    .nano-player {
+      width: 100%;
+      height: calc(100% - 22px);
+      padding: 0 3px 4px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: flex-start;
+      overflow: hidden;
+      color: white;
+    }
+
+    .now-playing-label {
+      width: 100%;
+      margin: 0 0 3px;
+      text-align: center;
+      font-size: 10px;
+      line-height: 1;
+      font-weight: 700;
+      color: #d8d8d8;
+    }
+
+    .track-art-full {
+      width: 188px;
+      height: 188px;
+      flex: 0 0 188px;
+      object-fit: cover;
+      margin: 0 0 4px;
+      border: 1px solid rgba(255,255,255,.2);
+    }
+
+    .progress-section {
+      width: 100%;
+      margin: 0 0 3px;
+    }
+
+    .time-row {
+      display: flex;
+      justify-content: space-between;
+      margin: 0 0 2px;
+      font-size: 7px;
+      line-height: 1;
+      color: #d8d8d8;
+    }
+
+    .progress-bar {
+      width: 100%;
+      height: 4px;
+      background: rgba(255,255,255,.22);
+      border-radius: 999px;
+      overflow: hidden;
+    }
+
+    .progress-fill {
+      width: 0%;
+      height: 100%;
+      background: white;
+      border-radius: 999px;
+      transition: width .15s linear;
+    }
+
+    .track-meta {
+      width: 100%;
+      min-width: 0;
+      text-align: center;
+    }
+
+    .track-title-full {
+      margin: 0 0 1px;
+      font-size: 9px;
+      line-height: 1.1;
+      font-weight: 700;
+      color: white;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .track-artist-full {
+      margin: 0;
+      font-size: 7px;
+      line-height: 1.1;
+      color: #d8d8d8;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .wheel-hotspot {
+      position: absolute;
+      z-index: 20;
+      border: 0;
+      padding: 0;
+      background: transparent;
+      cursor: pointer;
+      border-radius: 50%;
+      transform: translate(-50%, -50%);
+    }
+
+    .wheel-prev {
+      width: 46px;
+      height: 46px;
+      left: 22%;
+      top: 74.5%;
+    }
+
+    .wheel-next {
+      width: 46px;
+      height: 46px;
+      left: 78%;
+      top: 74.5%;
+    }
+
+    .wheel-play {
+      width: 60px;
+      height: 44px;
+      left: 50%;
+      top: 87.2%;
+    }
+
+    .wheel-center {
+      width: 68px;
+      height: 68px;
+      left: 50%;
+      top: 74.5%;
+    }
+
+    .wheel-hotspot:focus-visible {
+      outline: 3px solid #ff72b7;
+      outline-offset: 2px;
+    }
+  </style>
 </head>
 
-
 <body>
-
   <div class="music-card">
 
-    <h2 class="music-heading">
-      ♫ NOW PLAYING
-    </h2>
-
+    <h2 class="music-heading">♫ NOW PLAYING</h2>
 
     <div class="playlist-tabs">
-
-      <button
-        class="playlist-btn active"
-        id="teen-playlist"
-        type="button"
-      >
+      <button class="playlist-btn active" id="teen-playlist" type="button">
         teen chick flick
       </button>
 
-      <button
-        class="playlist-btn"
-        id="disney-playlist"
-        type="button"
-      >
+      <button class="playlist-btn" id="disney-playlist" type="button">
         radio disney
       </button>
-
     </div>
-
 
     <div class="ipod-wrap">
 
@@ -56,27 +294,14 @@
         alt="Pink iPod Nano"
       >
 
-
       <div class="ipod-screen">
 
         <div class="screen-top">
-
-          <span class="nano-label">
-            emma’s nano
-          </span>
-
-          <span class="nano-heart">
-            ♡
-          </span>
-
+          <span class="nano-label">emma’s nano</span>
+          <span class="nano-heart">♡</span>
         </div>
 
-
-        <div
-          class="spotify-login"
-          id="spotify-login"
-        >
-
+        <div class="spotify-login" id="spotify-login">
           <button
             class="connect-spotify"
             id="connect-spotify"
@@ -85,24 +310,14 @@
             ♡ CONNECT SPOTIFY
           </button>
 
-          <p
-            class="spotify-status"
-            id="spotify-status"
-          >
+          <p class="spotify-status" id="spotify-status">
             not connected
           </p>
-
         </div>
 
+        <div class="nano-player hidden" id="nano-player">
 
-        <div
-          class="nano-player hidden"
-          id="nano-player"
-        >
-
-          <div class="now-playing-label">
-            Now Playing
-          </div>
+          <div class="now-playing-label">Now Playing</div>
 
           <img
             id="track-art"
@@ -113,51 +328,24 @@
           <div class="progress-section">
 
             <div class="time-row">
-
-              <span id="current-time">
-                0:00
-              </span>
-
-              <span id="total-time">
-                0:00
-              </span>
-
+              <span id="current-time">0:00</span>
+              <span id="total-time">0:00</span>
             </div>
 
             <div class="progress-bar">
-
-              <div
-                class="progress-fill"
-                id="progress-fill"
-              ></div>
-
+              <div class="progress-fill" id="progress-fill"></div>
             </div>
 
           </div>
 
-
           <div class="track-meta">
-
-            <p
-              class="track-title-full"
-              id="track-title"
-            >
-              Track Title
-            </p>
-
-            <p
-              class="track-artist-full"
-              id="track-artist"
-            >
-              Artist Name
-            </p>
-
+            <p class="track-title-full" id="track-title">Track Title</p>
+            <p class="track-artist-full" id="track-artist">Artist Name</p>
           </div>
 
         </div>
 
       </div>
-
 
       <button
         class="wheel-hotspot wheel-prev"
@@ -188,12 +376,8 @@
       ></button>
 
     </div>
-
   </div>
 
-
-  <script src="script.js?v=10"></script>
-
+  <script src="script.js?v=11"></script>
 </body>
-
 </html>
