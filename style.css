@@ -368,3 +368,117 @@ body {
   left: 50%;
   transform: translateX(-50%);
 }
+.music-card {
+  background: #f468ad;
+  border: 6px solid #ff5fae;
+  padding: 28px;
+  text-align: center;
+}
+
+.music-heading {
+  color: white;
+  font-size: 22px;
+  font-weight: 800;
+  letter-spacing: 2px;
+  margin-bottom: 20px;
+}
+
+.playlist-tabs {
+  display: flex;
+  justify-content: center;
+  gap: 12px;
+  margin-bottom: 20px;
+}
+
+.playlist-btn {
+  background: #fff;
+  border: 2px solid #f4c2d8;
+  color: #ff1f8f;
+  font-weight: 700;
+  padding: 10px 18px;
+  cursor: pointer;
+}
+
+.playlist-btn.active {
+  border-color: #ff1f8f;
+}
+
+.ipod-wrap {
+  position: relative;
+  width: 280px;
+  margin: 0 auto;
+}
+
+.real-ipod {
+  width: 100%;
+  display: block;
+}
+
+.ipod-screen {
+  position: absolute;
+
+  /* these numbers will need adjusting based on your image */
+  top: 21px;
+  left: 31px;
+  width: 218px;
+  height: 165px;
+
+  background: #efe6eb;
+  border-radius: 4px;
+  padding: 10px;
+  box-sizing: border-box;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+
+.screen-top {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 8px;
+}
+
+.nano-label {
+  color: #ff1f8f;
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.nano-heart {
+  color: #ff1f8f;
+  font-size: 16px;
+}
+
+.album-art {
+  width: 120px;
+  height: 120px;
+  object-fit: cover;
+  border: 4px solid #f38bbb;
+  margin-bottom: 10px;
+}
+
+.now-playing-label {
+  color: #ff4fa3;
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 1px;
+  margin: 0 0 6px 0;
+}
+
+.song-title {
+  font-size: 17px;
+  line-height: 1.1;
+  margin: 0 0 6px 0;
+  color: #111;
+}
+
+.song-vibe {
+  margin: 0;
+  font-size: 12px;
+  color: #555;
+  font-style: italic;
+}
