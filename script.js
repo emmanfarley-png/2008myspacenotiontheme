@@ -3,6 +3,10 @@
 // -------------------------------------
 
 
+// -------------------------------------
+// SPOTIFY APP SETTINGS
+// -------------------------------------
+
 const clientId =
   "42362d9d05074c589e4b3489b040e2ae";
 
@@ -25,7 +29,6 @@ const scopes = [
 // PLAYLISTS
 // -------------------------------------
 
-
 const playlists = {
 
   teen:
@@ -42,17 +45,29 @@ const playlists = {
 // SPOTIFY PLAYER STATE
 // -------------------------------------
 
-
 let spotifyPlayer = null;
 
 let spotifyDeviceId = null;
+
+
+/*
+These variables let the progress bar
+keep moving between Spotify state updates.
+*/
+
+let playbackPosition = 0;
+
+let playbackDuration = 0;
+
+let playbackPaused = true;
+
+let playbackUpdatedAt = Date.now();
 
 
 
 // -------------------------------------
 // PAGE ELEMENTS
 // -------------------------------------
-
 
 const connectButton =
   document.getElementById(
@@ -78,12 +93,6 @@ const playerPanel =
   );
 
 
-const playerStatus =
-  document.getElementById(
-    "player-status"
-  );
-
-
 const trackArt =
   document.getElementById(
     "track-art"
@@ -102,21 +111,21 @@ const trackArtist =
   );
 
 
-const previousButton =
+const currentTimeElement =
   document.getElementById(
-    "prev-track"
+    "current-time"
   );
 
 
-const playButton =
+const totalTimeElement =
   document.getElementById(
-    "toggle-play"
+    "total-time"
   );
 
 
-const nextButton =
+const progressFill =
   document.getElementById(
-    "next-track"
+    "progress-fill"
   );
 
 
@@ -136,7 +145,6 @@ const disneyButton =
 // -------------------------------------
 // PKCE HELPERS
 // -------------------------------------
-
 
 function generateRandomString(length) {
 
@@ -203,14 +211,17 @@ function base64encode(input) {
 
 
 // -------------------------------------
-// START LOGIN
+// CONNECT TO SPOTIFY
 // -------------------------------------
-
 
 async function connectSpotify() {
 
-  statusText.textContent =
-    "opening spotify...";
+  if (statusText) {
+
+    statusText.textContent =
+      "opening spotify...";
+
+  }
 
 
   const codeVerifier =
@@ -218,11 +229,15 @@ async function connectSpotify() {
 
 
   const hashed =
-    await sha256(codeVerifier);
+    await sha256(
+      codeVerifier
+    );
 
 
   const codeChallenge =
-    base64encode(hashed);
+    base64encode(
+      hashed
+    );
 
 
   const state =
@@ -250,13 +265,17 @@ async function connectSpotify() {
   authUrl.search =
     new URLSearchParams({
 
-      client_id: clientId,
+      client_id:
+        clientId,
 
-      response_type: "code",
+      response_type:
+        "code",
 
-      redirect_uri: redirectUri,
+      redirect_uri:
+        redirectUri,
 
-      scope: scopes,
+      scope:
+        scopes,
 
       code_challenge_method:
         "S256",
@@ -264,7 +283,8 @@ async function connectSpotify() {
       code_challenge:
         codeChallenge,
 
-      state: state
+      state:
+        state
 
     }).toString();
 
@@ -282,7 +302,6 @@ async function connectSpotify() {
 // EXCHANGE LOGIN CODE FOR TOKEN
 // -------------------------------------
 
-
 async function exchangeCodeForToken(code) {
 
   const codeVerifier =
@@ -293,11 +312,13 @@ async function exchangeCodeForToken(code) {
 
   const response =
     await fetch(
+
       "https://accounts.spotify.com/api/token",
 
       {
 
-        method: "POST",
+        method:
+          "POST",
 
         headers: {
 
@@ -316,7 +337,8 @@ async function exchangeCodeForToken(code) {
             grant_type:
               "authorization_code",
 
-            code: code,
+            code:
+              code,
 
             redirect_uri:
               redirectUri,
@@ -337,17 +359,28 @@ async function exchangeCodeForToken(code) {
 
   if (!response.ok) {
 
-    console.error(data);
+    console.error(
+      "Spotify token error:",
+      data
+    );
 
-    statusText.textContent =
-      "spotify connection failed :(";
+
+    if (statusText) {
+
+      statusText.textContent =
+        "spotify connection failed :(";
+
+    }
+
 
     return;
 
   }
 
 
-  saveTokens(data);
+  saveTokens(
+    data
+  );
 
 
   localStorage.removeItem(
@@ -359,6 +392,11 @@ async function exchangeCodeForToken(code) {
     "spotify_auth_state"
   );
 
+
+  /*
+  Remove ?code=whatever
+  from the address bar.
+  */
 
   window.history.replaceState(
 
@@ -378,9 +416,8 @@ async function exchangeCodeForToken(code) {
 
 
 // -------------------------------------
-// TOKEN STORAGE
+// SAVE TOKENS
 // -------------------------------------
-
 
 function saveTokens(data) {
 
@@ -415,9 +452,8 @@ function saveTokens(data) {
 
 
 // -------------------------------------
-// REFRESH EXPIRED TOKEN
+// REFRESH ACCESS TOKEN
 // -------------------------------------
-
 
 async function refreshAccessToken() {
 
@@ -436,11 +472,13 @@ async function refreshAccessToken() {
 
   const response =
     await fetch(
+
       "https://accounts.spotify.com/api/token",
 
       {
 
-        method: "POST",
+        method:
+          "POST",
 
         headers: {
 
@@ -475,14 +513,20 @@ async function refreshAccessToken() {
 
   if (!response.ok) {
 
-    console.error(data);
+    console.error(
+      "Spotify refresh error:",
+      data
+    );
+
 
     return null;
 
   }
 
 
-  saveTokens(data);
+  saveTokens(
+    data
+  );
 
 
   return data.access_token;
@@ -501,21 +545,26 @@ async function getValidAccessToken() {
 
   const expiresAt =
     Number(
+
       localStorage.getItem(
         "spotify_expires_at"
       ) || 0
+
     );
 
 
   /*
-  Refresh a little early so the
-  token doesn't expire mid-song.
+  Refresh one minute early
+  so it doesn't expire mid-song.
   */
 
   if (
+
     token &&
+
     Date.now() <
       expiresAt - 60000
+
   ) {
 
     return token;
@@ -530,9 +579,8 @@ async function getValidAccessToken() {
 
 
 // -------------------------------------
-// LOAD SPOTIFY WEB PLAYBACK SDK
+// LOAD SPOTIFY SDK
 // -------------------------------------
-
 
 function loadSpotifySDK() {
 
@@ -589,9 +637,8 @@ function loadSpotifySDK() {
 
 
 // -------------------------------------
-// CREATE EMMA'S NANO DEVICE
+// CREATE EMMA'S NANO
 // -------------------------------------
-
 
 async function initializeSpotifyPlayer() {
 
@@ -608,11 +655,21 @@ async function initializeSpotifyPlayer() {
 
   if (!token) {
 
-    statusText.textContent =
-      "reconnect spotify";
+    if (statusText) {
 
-    connectButton.disabled =
-      false;
+      statusText.textContent =
+        "reconnect spotify";
+
+    }
+
+
+    if (connectButton) {
+
+      connectButton.disabled =
+        false;
+
+    }
+
 
     return;
 
@@ -625,11 +682,13 @@ async function initializeSpotifyPlayer() {
       name:
         "Emma's Nano",
 
+
       getOAuthToken:
         callback => {
 
           getValidAccessToken()
             .then(
+
               freshToken => {
 
                 callback(
@@ -637,20 +696,22 @@ async function initializeSpotifyPlayer() {
                 );
 
               }
+
             );
 
         },
 
-      volume: 0.5
+
+      volume:
+        0.5
 
     });
 
 
 
 // -------------------------------------
-// SDK READY
+// DEVICE READY
 // -------------------------------------
-
 
   spotifyPlayer.addListener(
 
@@ -662,22 +723,26 @@ async function initializeSpotifyPlayer() {
         device_id;
 
 
-      loginPanel.classList.add(
-        "hidden"
-      );
+      if (loginPanel) {
+
+        loginPanel.classList.add(
+          "hidden"
+        );
+
+      }
 
 
-      playerPanel.classList.remove(
-        "hidden"
-      );
+      if (playerPanel) {
 
+        playerPanel.classList.remove(
+          "hidden"
+        );
 
-      playerStatus.textContent =
-        "emma's nano is ready ♫";
+      }
 
 
       console.log(
-        "Emma's Nano device:",
+        "Emma's Nano is ready:",
         device_id
       );
 
@@ -691,19 +756,14 @@ async function initializeSpotifyPlayer() {
 // DEVICE OFFLINE
 // -------------------------------------
 
-
   spotifyPlayer.addListener(
 
     "not_ready",
 
     ({ device_id }) => {
 
-      playerStatus.textContent =
-        "nano went offline :(";
-
-
       console.log(
-        "Offline device:",
+        "Emma's Nano went offline:",
         device_id
       );
 
@@ -714,9 +774,8 @@ async function initializeSpotifyPlayer() {
 
 
 // -------------------------------------
-// ERRORS
+// PLAYER ERRORS
 // -------------------------------------
-
 
   spotifyPlayer.addListener(
 
@@ -724,10 +783,10 @@ async function initializeSpotifyPlayer() {
 
     ({ message }) => {
 
-      console.error(message);
-
-      playerStatus.textContent =
-        "player setup error";
+      console.error(
+        "Initialization error:",
+        message
+      );
 
     }
 
@@ -740,10 +799,10 @@ async function initializeSpotifyPlayer() {
 
     ({ message }) => {
 
-      console.error(message);
-
-      playerStatus.textContent =
-        "spotify login expired";
+      console.error(
+        "Authentication error:",
+        message
+      );
 
     }
 
@@ -756,10 +815,26 @@ async function initializeSpotifyPlayer() {
 
     ({ message }) => {
 
-      console.error(message);
+      console.error(
+        "Account error:",
+        message
+      );
 
-      playerStatus.textContent =
-        "spotify account error";
+    }
+
+  );
+
+
+  spotifyPlayer.addListener(
+
+    "playback_error",
+
+    ({ message }) => {
+
+      console.error(
+        "Playback error:",
+        message
+      );
 
     }
 
@@ -768,9 +843,8 @@ async function initializeSpotifyPlayer() {
 
 
 // -------------------------------------
-// SONG CHANGED
+// SONG / PLAYBACK CHANGED
 // -------------------------------------
-
 
   spotifyPlayer.addListener(
 
@@ -785,42 +859,9 @@ async function initializeSpotifyPlayer() {
       }
 
 
-      const track =
-        state.track_window
-          .current_track;
-
-
-      trackTitle.textContent =
-        track.name;
-
-
-      trackArtist.textContent =
-        track.artists
-          .map(
-            artist =>
-              artist.name
-          )
-          .join(", ");
-
-
-      const image =
-        track.album &&
-        track.album.images &&
-        track.album.images[0];
-
-
-      if (image) {
-
-        trackArt.src =
-          image.url;
-
-      }
-
-
-      playButton.textContent =
-        state.paused
-          ? "▶"
-          : "❚❚";
+      updatePlayerUI(
+        state
+      );
 
     }
 
@@ -829,9 +870,8 @@ async function initializeSpotifyPlayer() {
 
 
 // -------------------------------------
-// CONNECT DEVICE
+// CONNECT PLAYER
 // -------------------------------------
-
 
   const success =
     await spotifyPlayer.connect();
@@ -839,8 +879,9 @@ async function initializeSpotifyPlayer() {
 
   if (!success) {
 
-    statusText.textContent =
-      "nano couldn't connect :(";
+    console.error(
+      "Emma's Nano could not connect."
+    );
 
   }
 
@@ -849,9 +890,245 @@ async function initializeSpotifyPlayer() {
 
 
 // -------------------------------------
-// START A PLAYLIST
+// UPDATE NOW PLAYING SCREEN
 // -------------------------------------
 
+function updatePlayerUI(state) {
+
+  if (
+
+    !state ||
+
+    !state.track_window ||
+
+    !state.track_window.current_track
+
+  ) {
+
+    return;
+
+  }
+
+
+  const track =
+    state.track_window
+      .current_track;
+
+
+
+  // TITLE
+
+  if (trackTitle) {
+
+    trackTitle.textContent =
+      track.name ||
+      "Unknown track";
+
+  }
+
+
+
+  // ARTIST
+
+  if (trackArtist) {
+
+    trackArtist.textContent =
+      track.artists
+        .map(
+          artist =>
+            artist.name
+        )
+        .join(", ");
+
+  }
+
+
+
+  // ALBUM ART
+
+  const images =
+    track.album &&
+    track.album.images;
+
+
+  if (
+
+    trackArt &&
+
+    images &&
+
+    images.length > 0
+
+  ) {
+
+    trackArt.src =
+      images[0].url;
+
+  }
+
+
+
+  // PLAYBACK POSITION
+
+  playbackPosition =
+    state.position || 0;
+
+
+  playbackDuration =
+    state.duration ||
+    track.duration_ms ||
+    0;
+
+
+  playbackPaused =
+    state.paused;
+
+
+  playbackUpdatedAt =
+    Date.now();
+
+
+  updateProgressDisplay();
+
+}
+
+
+
+// -------------------------------------
+// FORMAT TIME
+// -------------------------------------
+
+function formatTime(milliseconds) {
+
+  const totalSeconds =
+    Math.floor(
+      milliseconds / 1000
+    );
+
+
+  const minutes =
+    Math.floor(
+      totalSeconds / 60
+    );
+
+
+  const seconds =
+    totalSeconds % 60;
+
+
+  return (
+    minutes +
+    ":" +
+    seconds
+      .toString()
+      .padStart(
+        2,
+        "0"
+      )
+  );
+
+}
+
+
+
+// -------------------------------------
+// PROGRESS BAR
+// -------------------------------------
+
+function updateProgressDisplay() {
+
+  let currentPosition =
+    playbackPosition;
+
+
+  /*
+  If music is playing,
+  calculate how much time has
+  passed since Spotify last
+  sent us a state update.
+  */
+
+  if (!playbackPaused) {
+
+    currentPosition +=
+      Date.now() -
+      playbackUpdatedAt;
+
+  }
+
+
+  if (
+
+    playbackDuration > 0 &&
+
+    currentPosition >
+      playbackDuration
+
+  ) {
+
+    currentPosition =
+      playbackDuration;
+
+  }
+
+
+
+  if (currentTimeElement) {
+
+    currentTimeElement.textContent =
+      formatTime(
+        currentPosition
+      );
+
+  }
+
+
+  if (totalTimeElement) {
+
+    totalTimeElement.textContent =
+      formatTime(
+        playbackDuration
+      );
+
+  }
+
+
+
+  if (progressFill) {
+
+    const percent =
+
+      playbackDuration > 0
+
+        ? (
+            currentPosition /
+            playbackDuration
+          ) * 100
+
+        : 0;
+
+
+    progressFill.style.width =
+      percent + "%";
+
+  }
+
+}
+
+
+
+// Keep progress bar moving smoothly.
+
+setInterval(
+  updateProgressDisplay,
+  500
+);
+
+
+
+// -------------------------------------
+// PLAY A PLAYLIST
+// -------------------------------------
 
 async function playPlaylist(
   playlistUri,
@@ -859,12 +1136,16 @@ async function playPlaylist(
 ) {
 
   if (
+
     !spotifyPlayer ||
+
     !spotifyDeviceId
+
   ) {
 
-    playerStatus.textContent =
-      "nano is still loading...";
+    console.log(
+      "Nano is still loading."
+    );
 
     return;
 
@@ -872,15 +1153,23 @@ async function playPlaylist(
 
 
   /*
-  User interaction activates audio
-  in browsers with autoplay rules.
+  Browser requires a user
+  interaction before audio.
   */
 
-  spotifyPlayer.activateElement();
+  await spotifyPlayer
+    .activateElement();
 
 
   const token =
     await getValidAccessToken();
+
+
+  if (!token) {
+
+    return;
+
+  }
 
 
   const response =
@@ -894,7 +1183,8 @@ async function playPlaylist(
 
       {
 
-        method: "PUT",
+        method:
+          "PUT",
 
         headers: {
 
@@ -923,35 +1213,42 @@ async function playPlaylist(
   if (!response.ok) {
 
     console.error(
+      "Playlist error:",
       await response.text()
     );
 
-
-    playerStatus.textContent =
-      "couldn't start playlist :(";
 
     return;
 
   }
 
 
-  teenButton.classList.remove(
-    "active"
-  );
+
+  if (teenButton) {
+
+    teenButton.classList.remove(
+      "active"
+    );
+
+  }
 
 
-  disneyButton.classList.remove(
-    "active"
-  );
+  if (disneyButton) {
+
+    disneyButton.classList.remove(
+      "active"
+    );
+
+  }
 
 
-  activeButton.classList.add(
-    "active"
-  );
+  if (activeButton) {
 
+    activeButton.classList.add(
+      "active"
+    );
 
-  playerStatus.textContent =
-    "playing ♫";
+  }
 
 }
 
@@ -961,96 +1258,120 @@ async function playPlaylist(
 // PLAYLIST BUTTONS
 // -------------------------------------
 
+if (teenButton) {
 
-teenButton.addEventListener(
+  teenButton.addEventListener(
 
-  "click",
+    "click",
 
-  () => {
+    () => {
 
-    playPlaylist(
-      playlists.teen,
-      teenButton
-    );
+      playPlaylist(
+        playlists.teen,
+        teenButton
+      );
 
-  }
+    }
 
-);
+  );
+
+}
 
 
-disneyButton.addEventListener(
 
-  "click",
+if (disneyButton) {
 
-  () => {
+  disneyButton.addEventListener(
 
-    playPlaylist(
-      playlists.disney,
-      disneyButton
-    );
+    "click",
 
-  }
+    () => {
 
-);
+      playPlaylist(
+        playlists.disney,
+        disneyButton
+      );
+
+    }
+
+  );
+
+}
 
 
 
 // -------------------------------------
-// PLAYER CONTROLS
+// THESE WILL POWER THE REAL CLICK WHEEL
 // -------------------------------------
 
+async function previousTrack() {
 
-previousButton.addEventListener(
+  if (!spotifyPlayer) {
 
-  "click",
-
-  () => {
-
-    if (spotifyPlayer) {
-
-      spotifyPlayer.previousTrack();
-
-    }
+    return;
 
   }
 
-);
+
+  await spotifyPlayer
+    .previousTrack();
+
+}
 
 
-playButton.addEventListener(
 
-  "click",
+async function togglePlayback() {
 
-  () => {
+  if (!spotifyPlayer) {
 
-    if (spotifyPlayer) {
-
-      spotifyPlayer.activateElement();
-
-      spotifyPlayer.togglePlay();
-
-    }
+    return;
 
   }
 
-);
+
+  await spotifyPlayer
+    .activateElement();
 
 
-nextButton.addEventListener(
+  await spotifyPlayer
+    .togglePlay();
 
-  "click",
+}
 
-  () => {
 
-    if (spotifyPlayer) {
 
-      spotifyPlayer.nextTrack();
+async function nextTrack() {
 
-    }
+  if (!spotifyPlayer) {
+
+    return;
 
   }
 
-);
+
+  await spotifyPlayer
+    .nextTrack();
+
+}
+
+
+
+/*
+Keep these accessible so we can
+hook invisible click-wheel buttons
+to them in the next step.
+*/
+
+window.previousTrack =
+  previousTrack;
+
+
+window.togglePlayback =
+  togglePlayback;
+
+
+window.nextTrack =
+  nextTrack;
 
 
 
@@ -1058,14 +1379,17 @@ nextButton.addEventListener(
 // CONNECT BUTTON
 // -------------------------------------
 
+if (connectButton) {
 
-connectButton.addEventListener(
+  connectButton.addEventListener(
 
-  "click",
+    "click",
 
-  connectSpotify
+    connectSpotify
 
-);
+  );
+
+}
 
 
 
@@ -1073,19 +1397,26 @@ connectButton.addEventListener(
 // CONNECTED UI
 // -------------------------------------
 
-
 function showConnected() {
 
-  connectButton.textContent =
-    "♥ SPOTIFY CONNECTED";
+  if (connectButton) {
+
+    connectButton.textContent =
+      "♥ SPOTIFY CONNECTED";
 
 
-  connectButton.disabled =
-    true;
+    connectButton.disabled =
+      true;
+
+  }
 
 
-  statusText.textContent =
-    "loading emma's nano...";
+  if (statusText) {
+
+    statusText.textContent =
+      "loading emma's nano...";
+
+  }
 
 
   loadSpotifySDK();
@@ -1098,7 +1429,6 @@ function showConnected() {
 // CHECK SPOTIFY CALLBACK
 // -------------------------------------
 
-
 async function checkSpotifyCallback() {
 
   const params =
@@ -1108,21 +1438,32 @@ async function checkSpotifyCallback() {
 
 
   const code =
-    params.get("code");
+    params.get(
+      "code"
+    );
 
 
   const returnedState =
-    params.get("state");
+    params.get(
+      "state"
+    );
 
 
   const error =
-    params.get("error");
+    params.get(
+      "error"
+    );
 
 
   if (error) {
 
-    statusText.textContent =
-      "spotify access denied";
+    if (statusText) {
+
+      statusText.textContent =
+        "spotify access denied";
+
+    }
+
 
     return;
 
@@ -1138,21 +1479,33 @@ async function checkSpotifyCallback() {
 
 
     if (
+
       !savedState ||
+
       returnedState !==
         savedState
+
     ) {
 
-      statusText.textContent =
-        "spotify login state mismatch";
+      if (statusText) {
+
+        statusText.textContent =
+          "spotify login state mismatch";
+
+      }
+
 
       return;
 
     }
 
 
-    statusText.textContent =
-      "connecting...";
+    if (statusText) {
+
+      statusText.textContent =
+        "connecting...";
+
+    }
 
 
     await exchangeCodeForToken(
@@ -1182,6 +1535,5 @@ async function checkSpotifyCallback() {
 // -------------------------------------
 // START
 // -------------------------------------
-
 
 checkSpotifyCallback();
