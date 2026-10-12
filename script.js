@@ -14,6 +14,9 @@ const clientId =
 const redirectUri =
   "https://emmanfarley-png.github.io/2008myspacenotiontheme/";
 
+const appOrigin =
+  new URL(redirectUri).origin;
+
 
 const scopes = [
   "streaming",
@@ -394,19 +397,24 @@ async function exchangeCodeForToken(code) {
 
 
   /*
-  Remove ?code=whatever
-  from the address bar.
+  Only clean the address bar when THIS page
+  actually contains Spotify callback params.
+  When auth finishes through a popup message,
+  keep nano.html exactly where it is.
   */
 
-  window.history.replaceState(
+  if (
+    window.location.search.includes("code=") ||
+    window.location.search.includes("error=")
+  ) {
 
-    {},
+    window.history.replaceState(
+      {},
+      document.title,
+      window.location.pathname
+    );
 
-    document.title,
-
-    redirectUri
-
-  );
+  }
 
 
   showConnected();
@@ -1546,6 +1554,92 @@ function showConnected() {
 
 
 // -------------------------------------
+// RECEIVE SPOTIFY AUTH FROM POPUP
+// -------------------------------------
+
+window.addEventListener(
+
+  "message",
+
+  async event => {
+
+    if (event.origin !== appOrigin) {
+      return;
+    }
+
+
+    if (
+      !event.data ||
+      event.data.type !==
+        "spotify-auth-callback"
+    ) {
+      return;
+    }
+
+
+    const code =
+      event.data.code;
+
+
+    const returnedState =
+      event.data.state;
+
+
+    const popupError =
+      event.data.error;
+
+
+    if (popupError) {
+
+      if (statusText) {
+        statusText.textContent =
+          "spotify access denied";
+      }
+
+      return;
+
+    }
+
+
+    const savedState =
+      localStorage.getItem(
+        "spotify_auth_state"
+      );
+
+
+    if (
+      !code ||
+      !savedState ||
+      returnedState !== savedState
+    ) {
+
+      if (statusText) {
+        statusText.textContent =
+          "spotify login state mismatch";
+      }
+
+      return;
+
+    }
+
+
+    if (statusText) {
+      statusText.textContent =
+        "connecting...";
+    }
+
+
+    await exchangeCodeForToken(
+      code
+    );
+
+  }
+
+);
+
+
+
+// -------------------------------------
 // CHECK SPOTIFY CALLBACK
 // -------------------------------------
 
@@ -1573,6 +1667,51 @@ async function checkSpotifyCallback() {
     params.get(
       "error"
     );
+
+
+  /*
+  Spotify redirects the auth popup to the main
+  GitHub Pages URL. If this page was opened by
+  the Nano, send the result back to that Nano
+  instead of leaving the full site open.
+  */
+
+  if (
+    window.opener &&
+    (code || error)
+  ) {
+
+    window.opener.postMessage(
+      {
+        type:
+          "spotify-auth-callback",
+
+        code:
+          code,
+
+        state:
+          returnedState,
+
+        error:
+          error
+      },
+      appOrigin
+    );
+
+
+    document.body.innerHTML =
+      '<div style="min-height:100vh;display:flex;align-items:center;justify-content:center;background:#171717;color:#ff72b7;font-family:Arial,sans-serif;text-align:center;padding:30px;"><strong>spotify connected ♡<br><br>you can close this tab</strong></div>';
+
+
+    setTimeout(
+      () => window.close(),
+      900
+    );
+
+
+    return;
+
+  }
 
 
   if (error) {
