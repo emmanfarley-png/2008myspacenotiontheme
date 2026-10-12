@@ -1,125 +1,385 @@
-let spotifyController;
+// -------------------------------------
+// EMMA'S NANO — SPOTIFY AUTH
+// -------------------------------------
 
 
-/*
-These are Emma's two playlists.
-*/
+// This is safe to be visible.
+// Never put your Client Secret here.
 
-const playlists = {
-
-  teen:
-    "spotify:playlist:0sQ9Tc3ckMW2SnHY9OpviQ",
-
-  disney:
-    "spotify:playlist:3iEuX7zIZir2G9KmPOegOr"
-
-};
+const clientId = "42362d9d05074c589e4b3489b040e2ae";
 
 
+// This MUST exactly match Spotify Dashboard.
 
-/*
-Spotify calls this function once
-its iframe player API is ready.
-*/
-
-window.onSpotifyIframeApiReady = function(IFrameAPI) {
-
-  const element =
-    document.getElementById("embed-iframe");
+const redirectUri =
+  "https://emmanfarley-png.github.io/2008myspacenotiontheme/";
 
 
-  const options = {
+// Permissions we want from Spotify.
 
-    width: "100%",
+const scopes = [
+  "streaming",
+  "user-read-email",
+  "user-read-private",
+  "user-read-playback-state",
+  "user-modify-playback-state"
+].join(" ");
 
-    height: 152,
-
-    uri: playlists.teen
-
-  };
 
 
-  IFrameAPI.createController(
+// -------------------------------------
+// PAGE ELEMENTS
+// -------------------------------------
 
-    element,
+const connectButton =
+  document.getElementById("connect-spotify");
 
-    options,
+const statusText =
+  document.getElementById("spotify-status");
 
-    function(controller) {
 
-      spotifyController = controller;
 
-    }
+// -------------------------------------
+// RANDOM STRING
+// -------------------------------------
 
+function generateRandomString(length) {
+
+  const possible =
+    "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+
+  const values =
+    crypto.getRandomValues(
+      new Uint8Array(length)
+    );
+
+  return values.reduce(
+    (result, value) =>
+      result + possible[value % possible.length],
+    ""
+  );
+}
+
+
+
+// -------------------------------------
+// PKCE HELPERS
+// -------------------------------------
+
+async function sha256(text) {
+
+  const encoder =
+    new TextEncoder();
+
+  const data =
+    encoder.encode(text);
+
+  return window.crypto.subtle.digest(
+    "SHA-256",
+    data
+  );
+}
+
+
+function base64encode(input) {
+
+  return btoa(
+    String.fromCharCode(
+      ...new Uint8Array(input)
+    )
+  )
+    .replace(/=/g, "")
+    .replace(/\+/g, "-")
+    .replace(/\//g, "_");
+}
+
+
+
+// -------------------------------------
+// START SPOTIFY LOGIN
+// -------------------------------------
+
+async function connectSpotify() {
+
+  statusText.textContent =
+    "opening spotify...";
+
+
+  const codeVerifier =
+    generateRandomString(64);
+
+  const hashed =
+    await sha256(codeVerifier);
+
+  const codeChallenge =
+    base64encode(hashed);
+
+
+  const state =
+    generateRandomString(16);
+
+
+  localStorage.setItem(
+    "spotify_code_verifier",
+    codeVerifier
   );
 
-};
+  localStorage.setItem(
+    "spotify_auth_state",
+    state
+  );
+
+
+  const authUrl =
+    new URL(
+      "https://accounts.spotify.com/authorize"
+    );
+
+
+  authUrl.search =
+    new URLSearchParams({
+
+      client_id: clientId,
+
+      response_type: "code",
+
+      redirect_uri: redirectUri,
+
+      scope: scopes,
+
+      code_challenge_method: "S256",
+
+      code_challenge: codeChallenge,
+
+      state: state
+
+    }).toString();
+
+
+  window.location.href =
+    authUrl.toString();
+}
 
 
 
-/*
-Find our two playlist buttons.
-*/
+// -------------------------------------
+// EXCHANGE CODE FOR TOKEN
+// -------------------------------------
 
-const teenButton =
-  document.getElementById("teen-playlist");
+async function exchangeCodeForToken(code) {
+
+  const codeVerifier =
+    localStorage.getItem(
+      "spotify_code_verifier"
+    );
 
 
-const disneyButton =
-  document.getElementById("disney-playlist");
+  const response =
+    await fetch(
+      "https://accounts.spotify.com/api/token",
+      {
+
+        method: "POST",
+
+        headers: {
+          "Content-Type":
+            "application/x-www-form-urlencoded"
+        },
+
+        body: new URLSearchParams({
+
+          client_id: clientId,
+
+          grant_type:
+            "authorization_code",
+
+          code: code,
+
+          redirect_uri:
+            redirectUri,
+
+          code_verifier:
+            codeVerifier
+
+        })
+
+      }
+    );
+
+
+  const data =
+    await response.json();
+
+
+  if (!response.ok) {
+
+    console.error(data);
+
+    statusText.textContent =
+      "spotify connection failed :(";
+
+    return;
+  }
+
+
+  localStorage.setItem(
+    "spotify_access_token",
+    data.access_token
+  );
+
+
+  if (data.refresh_token) {
+
+    localStorage.setItem(
+      "spotify_refresh_token",
+      data.refresh_token
+    );
+
+  }
+
+
+  const expiresAt =
+    Date.now() +
+    data.expires_in * 1000;
+
+
+  localStorage.setItem(
+    "spotify_expires_at",
+    expiresAt
+  );
+
+
+  localStorage.removeItem(
+    "spotify_code_verifier"
+  );
+
+  localStorage.removeItem(
+    "spotify_auth_state"
+  );
+
+
+  // Remove ?code=blahblah from the URL.
+
+  window.history.replaceState(
+    {},
+    document.title,
+    redirectUri
+  );
+
+
+  showConnected();
+}
 
 
 
-/*
-When teen chick flick is clicked...
-*/
+// -------------------------------------
+// DISPLAY CONNECTED STATE
+// -------------------------------------
 
-teenButton.addEventListener(
-  "click",
+function showConnected() {
 
-  function() {
+  connectButton.textContent =
+    "♥ SPOTIFY CONNECTED";
 
-    if (!spotifyController) {
+  connectButton.disabled = true;
+
+  statusText.textContent =
+    "emma's nano is online ♫";
+
+}
+
+
+
+// -------------------------------------
+// CHECK CALLBACK
+// -------------------------------------
+
+async function checkSpotifyCallback() {
+
+  const params =
+    new URLSearchParams(
+      window.location.search
+    );
+
+
+  const code =
+    params.get("code");
+
+  const returnedState =
+    params.get("state");
+
+  const error =
+    params.get("error");
+
+
+  if (error) {
+
+    statusText.textContent =
+      "spotify access denied";
+
+    return;
+  }
+
+
+  if (code) {
+
+    const savedState =
+      localStorage.getItem(
+        "spotify_auth_state"
+      );
+
+
+    if (
+      !savedState ||
+      returnedState !== savedState
+    ) {
+
+      statusText.textContent =
+        "spotify login state mismatch";
+
       return;
     }
 
 
-    spotifyController.loadEntity(
-      playlists.teen
+    statusText.textContent =
+      "connecting...";
+
+
+    await exchangeCodeForToken(code);
+
+    return;
+  }
+
+
+  const existingToken =
+    localStorage.getItem(
+      "spotify_access_token"
     );
 
 
-    teenButton.classList.add("active");
+  if (existingToken) {
 
-    disneyButton.classList.remove("active");
+    showConnected();
 
   }
-);
+
+}
 
 
 
-/*
-When radio disney is clicked...
-*/
+// -------------------------------------
+// BUTTON
+// -------------------------------------
 
-disneyButton.addEventListener(
+connectButton.addEventListener(
   "click",
-
-  function() {
-
-    if (!spotifyController) {
-      return;
-    }
-
-
-    spotifyController.loadEntity(
-      playlists.disney
-    );
-
-
-    disneyButton.classList.add("active");
-
-    teenButton.classList.remove("active");
-
-  }
+  connectSpotify
 );
+
+
+
+// -------------------------------------
+// START
+// -------------------------------------
+
+checkSpotifyCallback();
