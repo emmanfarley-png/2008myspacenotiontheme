@@ -1373,7 +1373,88 @@ window.togglePlayback =
 window.nextTrack =
   nextTrack;
 
+// -------------------------------------
+// PHYSICAL CLICK WHEEL HOTSPOTS
+// -------------------------------------
 
+const wheelPrevious =
+  document.getElementById(
+    "wheel-prev"
+  );
+
+
+const wheelNext =
+  document.getElementById(
+    "wheel-next"
+  );
+
+
+const wheelPlay =
+  document.getElementById(
+    "wheel-play"
+  );
+
+
+const wheelCenter =
+  document.getElementById(
+    "wheel-center"
+  );
+
+
+
+if (wheelPrevious) {
+
+  wheelPrevious.addEventListener(
+
+    "click",
+
+    previousTrack
+
+  );
+
+}
+
+
+
+if (wheelNext) {
+
+  wheelNext.addEventListener(
+
+    "click",
+
+    nextTrack
+
+  );
+
+}
+
+
+
+if (wheelPlay) {
+
+  wheelPlay.addEventListener(
+
+    "click",
+
+    togglePlayback
+
+  );
+
+}
+
+
+
+if (wheelCenter) {
+
+  wheelCenter.addEventListener(
+
+    "click",
+
+    togglePlayback
+
+  );
+
+}
 
 // -------------------------------------
 // CONNECT BUTTON
