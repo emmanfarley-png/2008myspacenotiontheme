@@ -1306,15 +1306,39 @@ if (disneyButton) {
 
 async function previousTrack() {
 
-  if (!spotifyPlayer) {
-
+  if (!spotifyDeviceId) {
     return;
-
   }
 
+  const token =
+    await getValidAccessToken();
 
-  await spotifyPlayer
-    .previousTrack();
+  if (!token) {
+    return;
+  }
+
+  const response =
+    await fetch(
+      "https://api.spotify.com/v1/me/player/previous" +
+      "?device_id=" +
+      encodeURIComponent(
+        spotifyDeviceId
+      ),
+      {
+        method: "POST",
+        headers: {
+          "Authorization":
+            "Bearer " + token
+        }
+      }
+    );
+
+  if (!response.ok) {
+    console.error(
+      "Previous track error:",
+      await response.text()
+    );
+  }
 
 }
 
@@ -1342,15 +1366,39 @@ async function togglePlayback() {
 
 async function nextTrack() {
 
-  if (!spotifyPlayer) {
-
+  if (!spotifyDeviceId) {
     return;
-
   }
 
+  const token =
+    await getValidAccessToken();
 
-  await spotifyPlayer
-    .nextTrack();
+  if (!token) {
+    return;
+  }
+
+  const response =
+    await fetch(
+      "https://api.spotify.com/v1/me/player/next" +
+      "?device_id=" +
+      encodeURIComponent(
+        spotifyDeviceId
+      ),
+      {
+        method: "POST",
+        headers: {
+          "Authorization":
+            "Bearer " + token
+        }
+      }
+    );
+
+  if (!response.ok) {
+    console.error(
+      "Next track error:",
+      await response.text()
+    );
+  }
 
 }
 
@@ -1444,17 +1492,8 @@ if (wheelPlay) {
 
 
 
-if (wheelCenter) {
-
-  wheelCenter.addEventListener(
-
-    "click",
-
-    togglePlayback
-
-  );
-
-}
+/* Center button is intentionally inactive for now.
+   The actual bottom play/pause marking controls playback. */
 
 // -------------------------------------
 // CONNECT BUTTON
