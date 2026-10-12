@@ -1,8 +1,13 @@
 body {
+  margin: 0;
+  padding: 40px;
+
   background: #171717;
+
   font-family: Arial, sans-serif;
   color: white;
 }
+
 
 .profile-card {
   width: 600px;
@@ -22,6 +27,16 @@ body {
 }
 
 
+.profile-photo {
+  width: 200px;
+  height: 200px;
+
+  object-fit: cover;
+
+  border: 6px solid white;
+}
+
+
 .profile-identity {
   flex: 1;
 }
@@ -29,7 +44,51 @@ body {
 
 .profile-identity h1 {
   margin: 0 0 20px 0;
+
   font-size: 56px;
+  line-height: 1;
+}
+
+
+.online-status {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+
+  margin: 0;
+
+  color: #ff007f;
+
+  font-size: 20px;
+  font-weight: bold;
+
+  white-space: nowrap;
+}
+
+
+.online-ring {
+  width: 20px;
+  height: 20px;
+
+  background: white;
+  border-radius: 50%;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  flex-shrink: 0;
+}
+
+
+.online-dot {
+  width: 11px;
+  height: 11px;
+
+  background: #39d353;
+  border-radius: 50%;
+
+  animation: blink 1s infinite;
 }
 
 
@@ -39,30 +98,23 @@ body {
 
 
 .status {
-  font-style: italic;
+  margin: 0;
+
   font-size: 22px;
+  font-style: italic;
   line-height: 1.4;
 }
 
 
 .bio {
   margin-top: 25px;
+  margin-bottom: 0;
+
   font-size: 18px;
   line-height: 1.4;
 }
-.online-dot {
-  display: inline-block;
 
-  width: 10px;
-  height: 10px;
 
-  background: limegreen;
-  border-radius: 50%;
-
-  margin-right: 6px;
-
-  animation: blink 1s infinite;
-}
 @keyframes blink {
   0% {
     opacity: 1;
@@ -75,13 +127,4 @@ body {
   100% {
     opacity: 1;
   }
-}
-.profile-layout {
-  display: flex;
-  gap: 18px;
-  align-items: flex-start;
-}
-
-.profile-info {
-  flex: 1;
 }
