@@ -32,7 +32,7 @@ window.onSpotifyIframeApiReady = function(IFrameAPI) {
 
     width: "100%",
 
-    height: 195,
+    height: 152,
 
     uri: playlists.teen
 
