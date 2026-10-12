@@ -101,9 +101,10 @@ function base64encode(input) {
 
 async function connectSpotify() {
 
+  console.log("spotify button clicked!");
+
   statusText.textContent =
     "opening spotify...";
-
 
   const codeVerifier =
     generateRandomString(64);
@@ -156,9 +157,10 @@ async function connectSpotify() {
     }).toString();
 
 
-  window.location.href =
-    authUrl.toString();
-}
+  window.open(
+  authUrl.toString(),
+  "_blank"
+);
 
 
 
