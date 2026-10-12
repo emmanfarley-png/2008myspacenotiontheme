@@ -900,3 +900,36 @@ on top of the iPod's black screen.
 .track-artist-full {
   font-size: 7px;
 }
+
+
+/* =====================================
+   CLICK WHEEL — PRECISE HOTSPOT ALIGNMENT
+   ===================================== */
+
+.wheel-prev {
+  width: 46px;
+  height: 46px;
+  left: 22%;
+  top: 74.5%;
+}
+
+.wheel-next {
+  width: 46px;
+  height: 46px;
+  left: 78%;
+  top: 74.5%;
+}
+
+.wheel-play {
+  width: 60px;
+  height: 44px;
+  left: 50%;
+  top: 87.2%;
+}
+
+.wheel-center {
+  width: 68px;
+  height: 68px;
+  left: 50%;
+  top: 74.5%;
+}
