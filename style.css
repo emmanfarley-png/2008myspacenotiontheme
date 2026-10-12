@@ -591,3 +591,94 @@ on top of the iPod's black screen.
 .nano-controls {
   display: none;
 }
+
+/* -------------------------------------
+   REAL IPOD CLICK WHEEL HOTSPOTS
+------------------------------------- */
+
+.wheel-hotspot {
+  position: absolute;
+
+  z-index: 20;
+
+  border: 0;
+  padding: 0;
+
+  background: transparent;
+
+  cursor: pointer;
+
+  border-radius: 50%;
+}
+
+
+/* LEFT / PREVIOUS */
+
+.wheel-prev {
+  width: 42px;
+  height: 42px;
+
+  left: 13%;
+  top: 67%;
+
+  transform: translate(
+    -50%,
+    -50%
+  );
+}
+
+
+/* RIGHT / NEXT */
+
+.wheel-next {
+  width: 42px;
+  height: 42px;
+
+  left: 87%;
+  top: 67%;
+
+  transform: translate(
+    -50%,
+    -50%
+  );
+}
+
+
+/* BOTTOM / PLAY-PAUSE */
+
+.wheel-play {
+  width: 50px;
+  height: 38px;
+
+  left: 50%;
+  top: 82%;
+
+  transform: translate(
+    -50%,
+    -50%
+  );
+}
+
+
+/* CENTER BUTTON */
+
+.wheel-center {
+  width: 72px;
+  height: 72px;
+
+  left: 50%;
+  top: 67%;
+
+  transform: translate(
+    -50%,
+    -50%
+  );
+}
+
+
+/* Keyboard accessibility */
+
+.wheel-hotspot:focus-visible {
+  outline: 3px solid #ff72b7;
+  outline-offset: 2px;
+}
