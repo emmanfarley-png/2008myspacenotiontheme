@@ -1,132 +1,349 @@
+* {
+  box-sizing: border-box;
+}
+
+
 body {
   margin: 0;
-  background: #111111;
+  padding: 40px;
+
+  background: #171717;
+
   font-family: Arial, Helvetica, sans-serif;
   color: white;
 }
 
-/* whole pink box */
-.music-card {
-  width: 520px;
-  margin: 40px auto;
-  padding: 30px 24px 36px;
-  background: #f46fb0;
-  border: 6px solid #ff4fa3;
-  text-align: center;
-  box-sizing: border-box;
-}
 
-/* heading */
-.music-heading {
-  margin: 0 0 18px 0;
-  color: #ffffff;
-  font-size: 20px;
-  font-weight: 800;
-  letter-spacing: 2px;
-}
-
-/* playlist buttons */
-.playlist-tabs {
-  display: flex;
-  justify-content: center;
-  gap: 12px;
-  margin-bottom: 24px;
-  flex-wrap: wrap;
-}
-
-.playlist-btn {
-  background: #ffffff;
-  color: #ff1f8f;
-  border: 3px solid #f7c8de;
-  padding: 10px 16px;
-  font-size: 14px;
-  font-weight: 700;
-  cursor: pointer;
-}
-
-.playlist-btn.active {
-  border-color: #ff1f8f;
-}
-
-/* ipod wrapper */
-.ipod-wrap {
-  position: relative;
-  width: 220px;
+.homepage {
+  max-width: 1200px;
   margin: 0 auto;
 }
 
-/* actual ipod image */
-.real-ipod {
-  width: 100%;
-  display: block;
+
+.top-section {
+  display: grid;
+
+  grid-template-columns: 1fr 1fr;
+
+  gap: 30px;
+
+  align-items: start;
 }
 
-/* screen overlay */
-.ipod-screen {
-  position: absolute;
-  top: 12px;
-  left: 19px;
-  width: 182px;
-  height: 205px;
-  box-sizing: border-box;
-  padding: 10px 10px 12px;
-  text-align: center;
-  overflow: hidden;
+
+
+/* -------------------------
+   PROFILE
+------------------------- */
+
+
+.profile-card {
+  padding: 35px;
+
+  background: #ffb6dc;
+  color: #111;
+
+  border: 4px solid #ff4fa3;
 }
 
-/* top line inside screen */
-.screen-top {
+
+.profile-header {
   display: flex;
-  justify-content: space-between;
+
   align-items: center;
-  margin-bottom: 8px;
+
+  gap: 40px;
 }
 
-.nano-label {
-  font-size: 12px;
-  font-weight: 700;
-  color: #ff2d95;
+
+.profile-photo {
+  width: 200px;
+  height: 200px;
+
+  object-fit: cover;
+
+  border: 6px solid white;
 }
 
-.nano-heart {
-  font-size: 16px;
-  color: #ff2d95;
+
+.profile-identity {
+  flex: 1;
+}
+
+
+.profile-identity h1 {
+  margin: 0 0 20px 0;
+
+  font-size: 56px;
   line-height: 1;
 }
 
-/* album art */
-.album-art {
-  width: 100%;
-  height: 108px;
-  object-fit: cover;
-  border: 4px solid #f48dbd;
-  box-sizing: border-box;
-  margin-bottom: 10px;
-}
 
-/* little label */
-.now-playing-label {
-  margin: 0 0 6px 0;
-  font-size: 11px;
-  font-weight: 800;
-  letter-spacing: 1px;
-  color: #ff4fa3;
-}
+.online-status {
+  display: flex;
 
-/* song title */
-.song-title {
-  margin: 0 0 6px 0;
-  font-size: 16px;
-  line-height: 1.1;
-  font-weight: 800;
-  color: #111111;
-}
+  align-items: center;
 
-/* vibe text */
-.song-vibe {
+  gap: 10px;
+
   margin: 0;
-  font-size: 12px;
-  line-height: 1.3;
-  color: #4a4a4a;
+
+  color: #ff007f;
+
+  font-size: 20px;
+  font-weight: bold;
+
+  white-space: nowrap;
+}
+
+
+.online-ring {
+  width: 20px;
+  height: 20px;
+
+  background: white;
+
+  border-radius: 50%;
+
+  display: flex;
+
+  align-items: center;
+  justify-content: center;
+
+  flex-shrink: 0;
+}
+
+
+.online-dot {
+  width: 11px;
+  height: 11px;
+
+  background: #39d353;
+
+  border-radius: 50%;
+
+  animation: blink 1s infinite;
+}
+
+
+.profile-details {
+  margin-top: 35px;
+}
+
+
+.status {
+  margin: 0;
+
+  font-size: 22px;
   font-style: italic;
+
+  line-height: 1.4;
+}
+
+
+.bio {
+  margin-top: 25px;
+  margin-bottom: 0;
+
+  font-size: 18px;
+
+  line-height: 1.4;
+}
+
+
+
+/* -------------------------
+   MUSIC AREA
+------------------------- */
+
+
+.music-card {
+  padding: 30px;
+
+  background: #f46fb0;
+
+  border: 6px solid #ff4fa3;
+
+  text-align: center;
+}
+
+
+.music-heading {
+  margin: 0 0 22px 0;
+
+  color: white;
+
+  font-size: 22px;
+  font-weight: 800;
+
+  letter-spacing: 2px;
+}
+
+
+.playlist-tabs {
+  display: flex;
+
+  justify-content: center;
+
+  gap: 12px;
+
+  margin-bottom: 28px;
+}
+
+
+.playlist-btn {
+  padding: 10px 18px;
+
+  background: white;
+
+  border: 3px solid #f7c8de;
+
+  color: #ff1684;
+
+  font-size: 14px;
+  font-weight: bold;
+
+  cursor: pointer;
+}
+
+
+.playlist-btn.active {
+  border-color: #ff1684;
+}
+
+
+
+/* -------------------------
+   REAL IPOD
+------------------------- */
+
+
+.ipod-wrap {
+  position: relative;
+
+  width: 260px;
+
+  margin: 0 auto;
+}
+
+
+.real-ipod {
+  display: block;
+
+  width: 100%;
+  height: auto;
+}
+
+
+
+/*
+The Spotify player is positioned
+on top of the iPod's black screen.
+*/
+
+.ipod-screen {
+  position: absolute;
+
+  top: 15px;
+  left: 22px;
+
+  width: 216px;
+  height: 245px;
+
+  overflow: hidden;
+
+  padding: 9px;
+
+  background: #111;
+
+  border-radius: 4px;
+}
+
+
+.screen-top {
+  display: flex;
+
+  justify-content: space-between;
+  align-items: center;
+
+  height: 24px;
+
+  margin-bottom: 5px;
+
+  color: #ff72b7;
+}
+
+
+.nano-label {
+  font-size: 11px;
+  font-weight: bold;
+}
+
+
+.nano-heart {
+  font-size: 17px;
+}
+
+
+#embed-iframe {
+  width: 100%;
+}
+
+
+
+/* -------------------------
+   ANIMATIONS
+------------------------- */
+
+
+@keyframes blink {
+
+  0% {
+    opacity: 1;
+  }
+
+  50% {
+    opacity: 0.2;
+  }
+
+  100% {
+    opacity: 1;
+  }
+
+}
+
+
+
+/* -------------------------
+   MOBILE
+------------------------- */
+
+
+@media (max-width: 800px) {
+
+  body {
+    padding: 20px;
+  }
+
+
+  .top-section {
+    grid-template-columns: 1fr;
+  }
+
+
+  .profile-header {
+    gap: 20px;
+  }
+
+
+  .profile-photo {
+    width: 150px;
+    height: 150px;
+  }
+
+
+  .profile-identity h1 {
+    font-size: 42px;
+  }
+
 }
