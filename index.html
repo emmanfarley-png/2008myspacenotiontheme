@@ -158,34 +158,49 @@
       <!-- AFTER SPOTIFY IS CONNECTED -->
 
       <div
-        class="nano-player hidden"
-        id="nano-player"
-      >
+  class="nano-player hidden"
+  id="nano-player"
+>
+  <div class="now-playing-label">
+    Now Playing
+  </div>
 
-        <div class="now-playing-row">
+  <img
+    id="track-art"
+    class="track-art-full"
+    alt="Current album art"
+  >
 
-          <img
-            id="track-art"
-            class="track-art"
-            alt="Current album art"
-          >
+  <div class="progress-section">
+    <div class="time-row">
+      <span id="current-time">0:00</span>
+      <span id="total-time">0:00</span>
+    </div>
 
-          <div class="track-info">
+    <div class="progress-bar">
+      <div
+        class="progress-fill"
+        id="progress-fill"
+      ></div>
+    </div>
+  </div>
 
-            <p
-              class="track-title"
-              id="track-title"
-            >
-              pick a playlist ♡
-            </p>
+  <div class="track-meta">
+    <p
+      class="track-title-full"
+      id="track-title"
+    >
+      Track Title
+    </p>
 
-            <p
-              class="track-artist"
-              id="track-artist"
-            >
-              emma's nano
-            </p>
-
+    <p
+      class="track-artist-full"
+      id="track-artist"
+    >
+      Artist Name
+    </p>
+  </div>
+</div>
           </div>
 
         </div>
